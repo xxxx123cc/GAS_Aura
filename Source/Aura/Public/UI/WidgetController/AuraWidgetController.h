@@ -43,11 +43,13 @@ public:
 	
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
-
+    //初始化属性
 	virtual void BroadcastInitialValues();
-
+	
+	virtual void BindCallBacksToDelegate();
 protected:
-
+    //为了获取各种属性需要的
+	
 	UPROPERTY(BlueprintReadOnly,Category="WidgetController")
 	TObjectPtr<APlayerController>PlayerController;
 	UPROPERTY(BlueprintReadOnly,Category="WidgetController")
@@ -55,6 +57,6 @@ protected:
 	UPROPERTY(BlueprintReadOnly,Category="WidgetController")
 	TObjectPtr<UAbilitySystemComponent>AbilitySystemComponent;
 	UPROPERTY(BlueprintReadOnly,Category="WidgetController")
-	TObjectPtr<UAttributeSet>AttributeSet;
+	TObjectPtr<UAttributeSet>AttributeSet=nullptr;
 	
 };

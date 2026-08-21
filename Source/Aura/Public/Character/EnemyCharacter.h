@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Character/AuraCharacter.h"
+#include "Character/AuraCharacterBase.h"
 #include "Interaction/EnemyInterface.h"
 #include "EnemyCharacter.generated.h"
 
@@ -11,7 +11,7 @@
  * 
  */
 UCLASS()
-class AURA_API AEnemyCharacter : public AAuraCharacter,public IEnemyInterface
+class AURA_API AEnemyCharacter : public AAuraCharacterBase, public IEnemyInterface
 {
 	GENERATED_BODY()
 	
@@ -19,6 +19,13 @@ class AURA_API AEnemyCharacter : public AAuraCharacter,public IEnemyInterface
 	AEnemyCharacter();
 	
     protected:
+	
+	virtual void InitAbilityInfo() override;
+	
+	virtual void PossessedBy(AController* NewController) override;
+	
+	virtual void BeginPlay() override;
+	
 	virtual void Highlight()  override;
 	
 	virtual void UnHighlight()  override;

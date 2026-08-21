@@ -8,6 +8,7 @@
  void UAuraUserWidget::SetWidgetController(UObject* InWidgetController)
  {
  	WidgetController=InWidgetController;
+ 	//获得控制器后通过控制器绑定委托
  	WidgetControllerSet();
  	
  }

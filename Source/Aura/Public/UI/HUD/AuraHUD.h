@@ -22,21 +22,21 @@ class AURA_API AAuraHUD : public AHUD
 public:
 	
 	UOverlayWidgetController* GetOverlayWidgetController(const FWidgetControllerParams& Params);
-	
+	//初始化界面
 	void InitOverlay(APlayerController*PC,APlayerState* PlayerState,UAbilitySystemComponent*Asc,UAttributeSet* AttributeSet);
 	
 	
 	
-	UPROPERTY()
-	TObjectPtr<UAuraUserWidget>OverlayWidget;
-	
-	
+
 protected:
 	
 	virtual void BeginPlay() override;
 	
 	
 private:
+	
+	UPROPERTY()
+	TObjectPtr<UAuraUserWidget>OverlayWidget;
 	
 	UPROPERTY()
 	TObjectPtr<UOverlayWidgetController>OverlayWidgetController;
