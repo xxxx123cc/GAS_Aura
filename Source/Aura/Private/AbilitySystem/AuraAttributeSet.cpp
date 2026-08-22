@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "GameFramework/Pawn.h"
 #include "GameplayEffectExtension.h"
+#include "Chaos/Deformable/MuscleActivationConstraints.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
@@ -51,6 +52,23 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 
 	FEffectProperties EffectProps;
 	SetEffectProperties(Data, EffectProps);
+	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		// 处理 Health 属性的变化
+		float NewHealth = GetHealth();
+		float MaxHealthValue = GetMaxHealth();
+		NewHealth = FMath::Clamp(NewHealth, 0.f, MaxHealthValue);
+		SetHealth(NewHealth);
+	}
+	if (Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		// 处理 Mana 属性的变化
+		float NewMana = GetMana();
+		float MaxManaValue = GetMaxMana();
+		NewMana = FMath::Clamp(NewMana, 0.f, MaxManaValue);
+		SetMana(NewMana);
+	}
+	
 }
 
 void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const

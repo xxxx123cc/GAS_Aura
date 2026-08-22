@@ -11,10 +11,8 @@ class UAuraUserWidget;
 struct FGameplayTag;
 struct FOnAttributeChangeData;
 //血量和法力委托
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthUpdate,float,Health);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthUpdate,float,MaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaUpdate,float,Mana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaUpdate,float,MaxMana);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributesUpdate,float,NewValue);
+
 
 
 USTRUCT(BlueprintType)
@@ -34,6 +32,7 @@ struct FUIWidgetRow:public FTableRowBase
 	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
 	UTexture2D* Image=nullptr;
 	
+	
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature,FUIWidgetRow,WidgetRow);
 /**
@@ -49,25 +48,18 @@ public:
 	
 	virtual void BindCallBacksToDelegate() override;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
-	FOnHealthUpdate OnHealthUpdate;
+	FOnAttributesUpdate OnHealthUpdate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
-	FOnManaUpdate  OnManaUpdate;
+	FOnAttributesUpdate  OnManaUpdate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
-	FOnMaxHealthUpdate OnMaxHealthUpdate;
+	FOnAttributesUpdate OnMaxHealthUpdate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
-	FOnMaxManaUpdate  OnMaxManaUpdate;
+	FOnAttributesUpdate  OnMaxManaUpdate;
 	UPROPERTY(BlueprintAssignable,Category="GAS|UI")
 	FMessageWidgetRowSignature OnMessageWidgetRow;
 	
 protected:
 	
-	void HealthChanged(const FOnAttributeChangeData& Data) const ;
-	
-	void ManaChanged(const FOnAttributeChangeData& Data) const ;
-	
-	void MaxHealthChanged(const FOnAttributeChangeData& Data)const ;
-	
-	void MaxManaChanged(const FOnAttributeChangeData& Data )const ;
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
 	TObjectPtr<UDataTable>UIWidgetDataTable;
