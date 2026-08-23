@@ -40,4 +40,18 @@ void AAuraCharacterBase::BeginPlay()
 	
 }
 
+void AAuraCharacterBase::InitializeDefaultAttributes()const
+{
+	
+	if (UAuraAbilitySystemComponent*ASC =Cast<UAuraAbilitySystemComponent>(GetAbilitySystemComponent()))
+	{
+		
+		const FGameplayEffectContextHandle EffectContextHandle=ASC->MakeEffectContext();	
+		
+		const FGameplayEffectSpecHandle EffectSpecHandle=ASC->MakeOutgoingSpec(DefaultAttributes,1,EffectContextHandle);
+			
+		ASC->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(),ASC);
+	}
+}
+
 

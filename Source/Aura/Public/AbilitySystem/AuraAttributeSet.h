@@ -80,6 +80,25 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
 	
 	
+	/*Primary Attributes*/
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Strength,Category="属性")
+	FGameplayAttributeData Strength;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Strength);
+	
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Intelligence,Category="属性")
+	FGameplayAttributeData Intelligence;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Intelligence);
+	
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Resilience,Category="属性")
+	FGameplayAttributeData Resilience;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Resilience);
+	
+	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Vigor,Category="属性")
+	FGameplayAttributeData Vigor;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Vigor);
+	
+	/*Vital Attributes*/
+	
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Health,Category="属性")
 	FGameplayAttributeData Health;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Health);
@@ -93,6 +112,9 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,MaxMana)
 	
+	
+	
+	
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth);
 	UFUNCTION()
@@ -101,5 +123,12 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	void OnRep_Mana(const FGameplayAttributeData& OldMana);
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana);
-	
+	UFUNCTION()
+	void OnRep_Strength(const FGameplayAttributeData& OldStrength);
+	UFUNCTION()
+	void OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence);
+	UFUNCTION()
+	void OnRep_Resilience(const FGameplayAttributeData& OldResilience);
+	UFUNCTION()
+	void OnRep_Vigor(const FGameplayAttributeData& OldVigor);
 };
