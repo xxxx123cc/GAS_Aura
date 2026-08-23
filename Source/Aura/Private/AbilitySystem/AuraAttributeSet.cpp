@@ -28,6 +28,10 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<class FLifetimePropert
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
 }
 
 void UAuraAttributeSet::PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue)
@@ -120,9 +124,6 @@ void UAuraAttributeSet::SetEffectProperties(const FGameplayEffectModCallbackData
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldHealth);
-	
-	
-	
 }
 
 void UAuraAttributeSet::OnRep_MaxHealth(const FGameplayAttributeData& OldMaxHealth)
@@ -138,4 +139,24 @@ void UAuraAttributeSet::OnRep_Mana(const FGameplayAttributeData& OldMana)
 void UAuraAttributeSet::OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana)
 {
 	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, MaxMana, OldMaxMana);
+}
+
+void UAuraAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Strength, OldStrength);
+}
+
+void UAuraAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Intelligence, OldIntelligence);
+}
+
+void UAuraAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResilience)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Resilience, OldResilience);
+}
+
+void UAuraAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor)
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Vigor, OldVigor);
 }
