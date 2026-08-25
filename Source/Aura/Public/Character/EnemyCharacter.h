@@ -25,12 +25,21 @@ class AURA_API AEnemyCharacter : public AAuraCharacterBase, public IEnemyInterfa
 	virtual void PossessedBy(AController* NewController) override;
 	
 	virtual void BeginPlay() override;
-	
+	//Enemy Interface
 	virtual void Highlight()  override;
 	
 	virtual void UnHighlight()  override;
+	//Enemy Interface
+	
+	//Combat Interface
+	virtual int32 GetLevel() override;
+	//Combat Interface
+	
 	
 	UPROPERTY(BlueprintReadOnly,VisibleAnywhere,Category = "Enemy")
 	bool bHighlighted = false;
 	
+private:
+	UPROPERTY(VisibleAnywhere,Category = "Enemy")
+	int32 EnemyLevel = 1;
 };

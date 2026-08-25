@@ -88,11 +88,11 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Intelligence,Category="属性")
 	FGameplayAttributeData Intelligence;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Intelligence);
-	
+	//韧性
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Resilience,Category="属性")
 	FGameplayAttributeData Resilience;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Resilience);
-	
+	//活力
 	UPROPERTY(BlueprintReadOnly,ReplicatedUsing=OnRep_Vigor,Category="属性")
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet,Vigor);

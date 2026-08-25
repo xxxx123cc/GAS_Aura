@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/Character.h"
+#include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
 class UGameplayEffect;
@@ -13,7 +14,7 @@ class UAbilitySystemComponent;
 
 
 UCLASS()
-class AURA_API AAuraCharacterBase : public ACharacter,public IAbilitySystemInterface
+class AURA_API AAuraCharacterBase : public ACharacter,public IAbilitySystemInterface,public ICombatInterface
 {
 	GENERATED_BODY()
 
@@ -30,6 +31,8 @@ protected:
 	
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 	
+	
+	virtual int32  GetLevel() override;
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	
@@ -42,10 +45,15 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSetClass;
 
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Character|Attributes")
-	TSubclassOf<UGameplayEffect> DefaultAttributes;
+	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Character|Attributes")
+	TSubclassOf<UGameplayEffect> DefaultSecondaryEffect;
+	
+	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	
 	void InitializeDefaultAttributes()const;
+	
 	
 	
 };

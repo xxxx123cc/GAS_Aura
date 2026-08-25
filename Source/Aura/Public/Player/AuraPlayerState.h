@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "AbilitySystemInterface.h"
 #include "GameFramework/PlayerState.h"
+#include "Interaction/CombatInterface.h"
 #include "AuraPlayerState.generated.h"
 
 class UAttributeSet;
@@ -19,7 +20,11 @@ class AURA_API AAuraPlayerState : public APlayerState,public IAbilitySystemInter
 public:
 	AAuraPlayerState();
 	
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	FORCEINLINE int32 GetLevel() ;
 	
 	virtual UAttributeSet* GetAttributeSet() const { return AttributeSetClass; }
 	
@@ -33,7 +38,11 @@ protected:
 	
 	
 	
+	
 private:
+	UPROPERTY(VisibleAnywhere, ReplicatedUsing=OnRep_PlayerLevel, Category = "PlayerState")
+	int32 PlayerLevel=1;
 	
-	
+	UFUNCTION()
+	void OnRep_PlayerLevel(int OldPlayerLevel);
 };

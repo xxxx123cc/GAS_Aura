@@ -47,3 +47,9 @@ void AEnemyCharacter::UnHighlight()
 {
 	bHighlighted = false;
 }
+
+int32 AEnemyCharacter::GetLevel()
+{
+	return EnemyLevel;
+}
+

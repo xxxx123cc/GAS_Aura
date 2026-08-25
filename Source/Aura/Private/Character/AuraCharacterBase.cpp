@@ -33,6 +33,11 @@ void AAuraCharacterBase::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& O
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
+int32 AAuraCharacterBase::GetLevel()
+{
+	return ICombatInterface::GetLevel();
+}
+
 // Called when the game starts or when spawned
 void AAuraCharacterBase::BeginPlay()
 {
@@ -40,18 +45,25 @@ void AAuraCharacterBase::BeginPlay()
 	
 }
 
-void AAuraCharacterBase::InitializeDefaultAttributes()const
+void AAuraCharacterBase::ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level) const
 {
-	
 	if (UAuraAbilitySystemComponent*ASC =Cast<UAuraAbilitySystemComponent>(GetAbilitySystemComponent()))
 	{
-		
 		const FGameplayEffectContextHandle EffectContextHandle=ASC->MakeEffectContext();	
 		
-		const FGameplayEffectSpecHandle EffectSpecHandle=ASC->MakeOutgoingSpec(DefaultAttributes,1,EffectContextHandle);
-			
+		const FGameplayEffectSpecHandle EffectSpecHandle=ASC->MakeOutgoingSpec(EffectClass,Level,EffectContextHandle);
+		
 		ASC->ApplyGameplayEffectSpecToTarget(*EffectSpecHandle.Data.Get(),ASC);
 	}
+	
 }
+
+void AAuraCharacterBase::InitializeDefaultAttributes() const
+{
+	ApplyEffectToSelf(DefaultPrimaryAttributes,1.f);
+	ApplyEffectToSelf(DefaultSecondaryEffect,1.f);
+}
+
+
 
 
