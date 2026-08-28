@@ -19,24 +19,24 @@ USTRUCT(BlueprintType)
 struct FUIWidgetRow:public FTableRowBase
 {
 	GENERATED_BODY()
-	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
+
+   UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
 	FGameplayTag WidgetTag;
-	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
+
+ UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
 	FText Message=FText();
-	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
+
+  UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
 	TSubclassOf<UAuraUserWidget> WidgetClass;
-	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
+
+   UPROPERTY(EditAnywhere,BlueprintReadOnly,Category="UI")
 	UTexture2D* Image=nullptr;
-	
-	
+
+
 };
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature,FUIWidgetRow,WidgetRow);
 /**
- * 
+ *
  */
 UCLASS()
 class AURA_API UOverlayWidgetController : public UAuraWidgetController
@@ -44,34 +44,60 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 	GENERATED_BODY()
 public:
 
-	virtual void BroadcastInitialValues() override;
-	
-	virtual void BindCallBacksToDelegate() override;
-	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+ virtual void BroadcastInitialValues() override;
+
+ virtual void BindCallBacksToDelegate() override;
+ UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnAttributesUpdate OnHealthUpdate;
-	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+  UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnAttributesUpdate  OnManaUpdate;
-	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnAttributesUpdate OnMaxHealthUpdate;
-	UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
 	FOnAttributesUpdate  OnMaxManaUpdate;
-	UPROPERTY(BlueprintAssignable,Category="GAS|UI")
+	
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnStrengthUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnIntelligenceUpdate;
+  UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnResilienceUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnVigorUpdate;
+
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnArmorUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnArmorPenetrationUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnBlockChanceUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnCriticalHitChanceUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnCriticalHitDamageUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnCriticalHitResistanceUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnHealthRegenerationUpdate;
+   UPROPERTY(BlueprintAssignable,Category="GAS|Attributes")
+	FOnAttributesUpdate OnManaRegenerationUpdate;
+
+   UPROPERTY(BlueprintAssignable,Category="GAS|UI")
 	FMessageWidgetRowSignature OnMessageWidgetRow;
-	
+
+ 
 protected:
-	
-	
-	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
+
+   UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Widget Data")
 	TObjectPtr<UDataTable>UIWidgetDataTable;
-	
+
 	template<typename T>
 	T *GetTableRowByTag(const FGameplayTag& Tag,UDataTable* DataTable);
-	
-	
+
+ 
 private:
-	
-	
-	
+
+ 
 };
 
 template <typename T>

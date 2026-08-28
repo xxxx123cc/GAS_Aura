@@ -50,6 +50,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character|Attributes")
 	TSubclassOf<UGameplayEffect> DefaultSecondaryEffect;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Character|Attributes")
+	TSubclassOf<UGameplayEffect> DefaultVitalEffect;
+	
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	
 	void InitializeDefaultAttributes()const;
