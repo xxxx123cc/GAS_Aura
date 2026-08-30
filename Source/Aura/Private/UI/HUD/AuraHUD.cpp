@@ -5,6 +5,7 @@
 
 #include "Blueprint/UserWidget.h"
 #include "UI/Widget/AuraUserWidget.h"
+#include "UI/WidgetController/AttributesMenuWidgetController.h"
 #include "UI/WidgetController/OverlayWidgetController.h"
 
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& Params)
@@ -40,6 +41,19 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PlayerState, UAb
 	WidgetController->BroadcastInitialValues();
 	//控件蓝图添加视口
 	Widget->AddToViewport();
+}
+
+UAttributesMenuWidgetController* AAuraHUD::GetAttributesMenuWidgetController(const FWidgetControllerParams& Params)
+{
+	if (AttributesMenuWidgetController==nullptr)
+	{
+		AttributesMenuWidgetController = NewObject<UAttributesMenuWidgetController>(this,AttributesMenuWidgetControllerClass);
+		AttributesMenuWidgetController->SetWidgetControllerParams(Params);
+		AttributesMenuWidgetController->BindCallBacksToDelegate();
+		return AttributesMenuWidgetController;
+	}
+	return AttributesMenuWidgetController;
+	
 }
 
 void AAuraHUD::BeginPlay()
