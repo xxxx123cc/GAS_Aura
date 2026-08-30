@@ -44,8 +44,10 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams(const FWidgetControllerParams& Params);
     //初始化属性
+	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValues();
 	
+	UFUNCTION(BlueprintCallable)
 	virtual void BindCallBacksToDelegate();
 protected:
     //为了获取各种属性需要的

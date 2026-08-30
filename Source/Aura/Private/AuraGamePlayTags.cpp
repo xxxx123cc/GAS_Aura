@@ -24,20 +24,20 @@ void FAuraGameplayTags::InitializeNativeTags()
 		FName("Attributes.Secondary.HealthRegeneration"), TEXT("生命恢复"));
 	GameplayTags.Attributes_Secondary_ManaRegeneration = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Secondary.ManaRegeneration"), TEXT("法力恢复"));
-	GameplayTags.Attributes_Secondary_ManaRegeneration = GameplayTagsManager.AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_MaxHealth = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxHealth"), TEXT("最大生命"));
-	GameplayTags.Attributes_Secondary_ManaRegeneration = GameplayTagsManager.AddNativeGameplayTag(
+	GameplayTags.Attributes_Secondary_MaxMana= GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Secondary.MaxMana"), TEXT("最大法力"));
 	
 	//Primary GameplayTags
 	
-	GameplayTags.Attributes_Secondary_Armor = GameplayTagsManager.AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Strength = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Primary.Strength"), TEXT("力量"));
-	GameplayTags.Attributes_Secondary_Armor = GameplayTagsManager.AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Intelligence = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Primary.Intelligence"), TEXT("智力"));
-	GameplayTags.Attributes_Secondary_Armor = GameplayTagsManager.AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Resilience= GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Primary.Resilience"), TEXT("韧性"));	
-	GameplayTags.Attributes_Secondary_Armor = GameplayTagsManager.AddNativeGameplayTag(
+	GameplayTags.Attributes_Primary_Vigor = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Primary.Vigor"), TEXT("活力"));
 }
 
