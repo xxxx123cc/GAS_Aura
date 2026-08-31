@@ -68,6 +68,18 @@ void AAuraCharacterBase::InitializeDefaultAttributes() const
 	ApplyEffectToSelf(DefaultVitalEffect,1.f);
 }
 
+void AAuraCharacterBase::AddGameplayAbility()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	if (AbilitySystemComponent)
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->GrantAbilities(StartupAbilities,GetLevel(),this);
+	
+	
+}
+
 
 
 

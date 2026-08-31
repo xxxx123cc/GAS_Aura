@@ -8,6 +8,7 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
 class UAbilitySystemComponent;
@@ -22,6 +23,7 @@ public:
 	// Sets default values for this character's properties
 	AAuraCharacterBase();
 
+	virtual void BeginPlay() override;
 protected:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	
@@ -34,7 +36,7 @@ protected:
 	
 	virtual int32  GetLevel() override;
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	
 	
 	UPROPERTY(EditAnywhere, Category = "Character|Combat")
 	TObjectPtr<USkeletalMeshComponent> Weapon;
@@ -56,6 +58,16 @@ protected:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	
 	void InitializeDefaultAttributes()const;
+	
+protected:
+
+	UFUNCTION()
+	void AddGameplayAbility() ;
+	
+	
+private:
+	UPROPERTY(EditDefaultsOnly, Category = "Character|Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 	
 	
 	

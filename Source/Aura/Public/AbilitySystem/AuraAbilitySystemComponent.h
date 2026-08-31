@@ -20,6 +20,7 @@ public:
 
 	void AbilityActorInfoSet();
 	
+	void GrantAbilities(TArray<TSubclassOf<UGameplayAbility>> AbilityClasses, int32 Level, AActor* InAvatarActor);
 	
 	
 	FEffectAssetTags OnEffectAssetTags;

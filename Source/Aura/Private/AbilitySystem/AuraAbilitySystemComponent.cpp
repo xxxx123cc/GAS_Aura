@@ -10,9 +10,24 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&ThisClass::EffectApplied);
 	
 	FAuraGameplayTags GameplayTag= FAuraGameplayTags::Get();
-
-	GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green,FString::Printf(TEXT("Attributes_Secondary_Armor tag name: %s"),*GameplayTag.Attributes_Secondary_Armor.GetTagName().ToString()));
+	
 }
+
+void UAuraAbilitySystemComponent::GrantAbilities(TArray<TSubclassOf<UGameplayAbility>> AbilityClasses, int32 Level, AActor* InAvatarActor)
+{
+	if (!InAvatarActor)
+	{
+		return;
+	}
+
+	for (TSubclassOf<UGameplayAbility>& AbilityClass : AbilityClasses)
+	{
+		FGameplayAbilitySpec AbilitySpec(AbilityClass, Level);
+		AbilitySpec.SourceObject = InAvatarActor;
+		GiveAbilityAndActivateOnce(AbilitySpec);
+	}
+}
+
 
 void UAuraAbilitySystemComponent::BeginPlay()
 {
