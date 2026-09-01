@@ -4,6 +4,7 @@
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
 #include "AuraGamePlayTags.h"
+#include "AbilitySystem/Abilities/AuraGameplayAbility.h"
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
@@ -19,13 +20,58 @@ void UAuraAbilitySystemComponent::GrantAbilities(TArray<TSubclassOf<UGameplayAbi
 	{
 		return;
 	}
-
 	for (TSubclassOf<UGameplayAbility>& AbilityClass : AbilityClasses)
 	{
 		FGameplayAbilitySpec AbilitySpec(AbilityClass, Level);
 		AbilitySpec.SourceObject = InAvatarActor;
-		GiveAbilityAndActivateOnce(AbilitySpec);
+		AbilitySpec.DynamicAbilityTags.AddTag(Cast<UAuraGameplayAbility>(AbilitySpec.Ability)->GetAbilityTag());
+		GiveAbility(AbilitySpec);
 	}
+}
+
+void UAuraAbilitySystemComponent::OnPressed(const FGameplayTag& GameplayTag)
+{
+	for(FGameplayAbilitySpec AbilitySpec:GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(GameplayTag))
+		{
+			TryActivateAbility(AbilitySpec.Handle);
+		}
+		
+		
+		
+	}
+	
+	
+	
+}
+
+void UAuraAbilitySystemComponent::OnReleased(const FGameplayTag& GameplayTag)
+{
+	for(FGameplayAbilitySpec AbilitySpec:GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(GameplayTag))
+		{
+			AbilitySpecInputReleased(AbilitySpec);
+		}
+		
+	}
+	
+	
+}
+
+void UAuraAbilitySystemComponent::OnTrigger(const FGameplayTag& GameplayTag)
+{
+	for(FGameplayAbilitySpec AbilitySpec:GetActivatableAbilities())
+	{
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(GameplayTag))
+		{  AbilitySpecInputPressed( AbilitySpec);
+			if (!AbilitySpec.IsActive())
+				TryActivateAbility(AbilitySpec.Handle);
+		}
+		
+	}
+	
 }
 
 

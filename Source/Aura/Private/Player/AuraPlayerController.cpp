@@ -3,9 +3,15 @@
 
 #include "Player/AuraPlayerController.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Character/AuraCharacterBase.h"
+#include "Input/AuraEnhancedInputComponent.h"
+#include "Input/AuraInputConfig.h"
 #include "Interaction/EnemyInterface.h"
+#include "Player/AuraPlayerState.h"
 
 AAuraPlayerController::AAuraPlayerController()
 {
@@ -17,19 +23,24 @@ void AAuraPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	check(DefaultMappingContext);
+	check(AbilityInputMappingContext);
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
 	if (Subsystem)
 	Subsystem->AddMappingContext(DefaultMappingContext, 0);
+	Subsystem->AddMappingContext(AbilityInputMappingContext, 0);
 
 }
 
 void AAuraPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-
-	UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent);
-	EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::MoveInputAction);
-
+	UAuraEnhancedInputComponent*AuraEnhancedInputComponent=CastChecked<UAuraEnhancedInputComponent>(InputComponent);
+	
+	AuraEnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AAuraPlayerController::MoveInputAction);
+   
+	AuraEnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::AbilityInputActionPressed,&ThisClass::AbilityInputActionOnCompleted,&AAuraPlayerController::AbilityInputActionOnTrigger);
+	
+	
 	FInputModeGameAndUI InputMode;
 	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
 	InputMode.SetHideCursorDuringCapture(false);
@@ -71,7 +82,7 @@ void AAuraPlayerController::CursorTrace()
 	
 }
 
-void AAuraPlayerController::MoveInputAction(const FInputActionValue& Value)
+void AAuraPlayerController::MoveInputAction(const FInputActionValue& Value) const
 {
 	FVector2D MovementVector = Value.Get<FVector2D>();
 	APawn* ControlledPawn = GetPawn();
@@ -83,5 +94,26 @@ void AAuraPlayerController::MoveInputAction(const FInputActionValue& Value)
 	FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 	ControlledPawn->AddMovementInput(ForwardDirection, MovementVector.Y);
 	ControlledPawn->AddMovementInput(RightDirection, MovementVector.X);
+	
+}
+
+void AAuraPlayerController::AbilityInputActionPressed(FGameplayTag GameplayTag) const
+{
+	
+		AbilitySystemComponent->OnPressed(GameplayTag);
+	
+}
+
+void AAuraPlayerController::AbilityInputActionOnCompleted( FGameplayTag GameplayTag) const
+{
+	
+		AbilitySystemComponent->OnReleased(GameplayTag);
+	
+}
+
+void AAuraPlayerController::AbilityInputActionOnTrigger(FGameplayTag GameplayTag) const
+{
+	
+		AbilitySystemComponent->OnTrigger(GameplayTag);
 	
 }

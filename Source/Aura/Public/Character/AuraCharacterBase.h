@@ -8,6 +8,8 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
+class UAuraAttributeSet;
+class UAuraAbilitySystemComponent;
 class UGameplayAbility;
 class UGameplayEffect;
 class UAttributeSet;
@@ -24,17 +26,22 @@ public:
 	AAuraCharacterBase();
 
 	virtual void BeginPlay() override;
-protected:
+	
+	
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	
+	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+    	
+    	
+	virtual int32  GetLevel() override;
+protected:
+	
 	
 	virtual void InitAbilityInfo();
 	
-	virtual UAttributeSet* GetAttributeSet() const { return AttributeSetClass; }
-	
-	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
+	virtual UAuraAttributeSet* GetAttributeSet() const { return AttributeSetClass; }
 	
 	
-	virtual int32  GetLevel() override;
 	// Called when the game starts or when spawned
 	
 	
@@ -42,9 +49,9 @@ protected:
 	TObjectPtr<USkeletalMeshComponent> Weapon;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Character")
-	TObjectPtr<UAbilitySystemComponent> AbilitySystemComponent;
+	TObjectPtr<UAuraAbilitySystemComponent> AbilitySystemComponent;
 	UPROPERTY(EditDefaultsOnly, Category = "Character")
-	TObjectPtr<UAttributeSet> AttributeSetClass;
+	TObjectPtr<UAuraAttributeSet> AttributeSetClass;
 
 	UPROPERTY(BlueprintReadOnly,EditAnywhere,Category="Character|Attributes")
 	TSubclassOf<UGameplayEffect> DefaultPrimaryAttributes;

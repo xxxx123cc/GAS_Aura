@@ -22,7 +22,12 @@ public:
 	
 	void GrantAbilities(TArray<TSubclassOf<UGameplayAbility>> AbilityClasses, int32 Level, AActor* InAvatarActor);
 	
+	void OnPressed(const FGameplayTag&GameplayTag );
 	
+	void OnReleased(const FGameplayTag&GameplayTag );
+	
+	
+	void OnTrigger(const FGameplayTag&GameplayTag );
 	FEffectAssetTags OnEffectAssetTags;
 	
 	

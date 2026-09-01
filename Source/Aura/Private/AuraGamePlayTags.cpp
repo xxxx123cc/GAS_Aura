@@ -39,6 +39,14 @@ void FAuraGameplayTags::InitializeNativeTags()
 		FName("Attributes.Primary.Resilience"), TEXT("韧性"));	
 	GameplayTags.Attributes_Primary_Vigor = GameplayTagsManager.AddNativeGameplayTag(
 		FName("Attributes.Primary.Vigor"), TEXT("活力"));
+	
+	//Abilities GameplayTags
+	GameplayTags.InputTag_LMB = GameplayTagsManager.AddNativeGameplayTag(FName("InputTag_LMB"),TEXT("鼠标左键"));
+	GameplayTags.InputTag_RMB = GameplayTagsManager.AddNativeGameplayTag(FName("InputTag_RMB"),TEXT("鼠标右键"));
+	GameplayTags.InputTag_1 = GameplayTagsManager.AddNativeGameplayTag(FName("InputTag_1"),TEXT("键位1"));
+	GameplayTags.InputTag_2 = GameplayTagsManager.AddNativeGameplayTag(FName("InputTag_2"),TEXT("键位2"));
+	GameplayTags.InputTag_3 = GameplayTagsManager.AddNativeGameplayTag(FName("InputTag_3"),TEXT("键位3"));
+	GameplayTags.InputTag_4 = GameplayTagsManager.AddNativeGameplayTag(FName("InputTag_4"),TEXT("键位4"));
 }
 
 FAuraGameplayTags FAuraGameplayTags::GameplayTags;
