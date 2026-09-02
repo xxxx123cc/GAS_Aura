@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "AuraPlayerController.generated.h"
 
+class USplineComponent;
 class UAuraAbilitySystemComponent;
 class UAuraInputConfig;
 class IEnemyInterface;
@@ -31,9 +32,13 @@ protected:
 	
 	virtual void SetupInputComponent() override;
 	
+	void AutoRunning();
+
 	virtual void Tick(float DeltaTime) override;
+	virtual void PlayerTick(float DeltaTime) override;	
 	
 	void CursorTrace();
+	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
 	
 	
 private:
@@ -63,11 +68,33 @@ private:
 	
 	TObjectPtr<IEnemyInterface>HitActor = nullptr;
 	
-	void MoveInputAction(const FInputActionValue& Value) const;
+	void MoveInputAction(const FInputActionValue& Value) ;
 	
-	void AbilityInputActionPressed( FGameplayTag GameplayTag ) const;
+	void AbilityInputActionPressed( FGameplayTag GameplayTag ) ;
 	
-	void AbilityInputActionOnCompleted(FGameplayTag GameplayTag) const;
+	void AbilityInputActionOnCompleted(FGameplayTag GameplayTag) ;
 	
-	void AbilityInputActionOnTrigger(FGameplayTag GameplayTag) const;
+	void AbilityInputActionOnTrigger(FGameplayTag GameplayTag) ;
+	
+	float FollowingTime = 0.f;
+	
+	float ShortPressedTime=0.6f;
+	
+	bool IsTargeting=false;
+	
+	bool bAutoRunning=false;
+	
+	FVector CachedDestination;
+	bool bHasDestination = false;
+	int32 CurrentPathPoint = 1;
+	
+	UPROPERTY(EditDefaultsOnly)
+	float AutoRunAcceptRadius=50.f;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<USplineComponent> Spline;
+	
+	
+	
+	
 };

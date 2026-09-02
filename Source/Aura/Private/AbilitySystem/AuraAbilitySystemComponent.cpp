@@ -8,7 +8,7 @@
 
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&ThisClass::EffectApplied);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this,&ThisClass::ClientEffectApplied_Implementation);
 	
 	FAuraGameplayTags GameplayTag= FAuraGameplayTags::Get();
 	
@@ -22,16 +22,23 @@ void UAuraAbilitySystemComponent::GrantAbilities(TArray<TSubclassOf<UGameplayAbi
 	}
 	for (TSubclassOf<UGameplayAbility>& AbilityClass : AbilityClasses)
 	{
+		if (!AbilityClass)
+		{
+			continue;
+		}
 		FGameplayAbilitySpec AbilitySpec(AbilityClass, Level);
 		AbilitySpec.SourceObject = InAvatarActor;
-		AbilitySpec.DynamicAbilityTags.AddTag(Cast<UAuraGameplayAbility>(AbilitySpec.Ability)->GetAbilityTag());
+		if (const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
+		{
+			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->GetAbilityTag());
+		}
 		GiveAbility(AbilitySpec);
 	}
 }
 
 void UAuraAbilitySystemComponent::OnPressed(const FGameplayTag& GameplayTag)
 {
-	for(FGameplayAbilitySpec AbilitySpec:GetActivatableAbilities())
+	for(FGameplayAbilitySpec& AbilitySpec:GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(GameplayTag))
 		{
@@ -48,7 +55,7 @@ void UAuraAbilitySystemComponent::OnPressed(const FGameplayTag& GameplayTag)
 
 void UAuraAbilitySystemComponent::OnReleased(const FGameplayTag& GameplayTag)
 {
-	for(FGameplayAbilitySpec AbilitySpec:GetActivatableAbilities())
+	for(FGameplayAbilitySpec& AbilitySpec:GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(GameplayTag))
 		{
@@ -62,7 +69,7 @@ void UAuraAbilitySystemComponent::OnReleased(const FGameplayTag& GameplayTag)
 
 void UAuraAbilitySystemComponent::OnTrigger(const FGameplayTag& GameplayTag)
 {
-	for(FGameplayAbilitySpec AbilitySpec:GetActivatableAbilities())
+	for(FGameplayAbilitySpec& AbilitySpec:GetActivatableAbilities())
 	{
 		if (AbilitySpec.DynamicAbilityTags.HasTagExact(GameplayTag))
 		{  AbilitySpecInputPressed( AbilitySpec);
@@ -83,14 +90,16 @@ void UAuraAbilitySystemComponent::BeginPlay()
 	
 }
 
-void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
-                                                const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveHandle) const
+void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
+	const FGameplayEffectSpec& SpecApplied, FActiveGameplayEffectHandle ActiveHandle) const
 {
 	FGameplayTagContainer GameplayTagContainer;
-	SpecApplied.GetAllAssetTags(GameplayTagContainer);
-	UE_LOG(LogTemp, Warning, TEXT("[EffectApplied] broadcast %d tags"), GameplayTagContainer.Num());
-	OnEffectAssetTags.Broadcast(GameplayTagContainer);                                      
-	
+ 	SpecApplied.GetAllAssetTags(GameplayTagContainer);
+ 	UE_LOG(LogTemp, Warning, TEXT("[EffectApplied] broadcast %d tags"), GameplayTagContainer.Num());
+ 	OnEffectAssetTags.Broadcast(GameplayTagContainer);     
+}
+
+
 	
 	
 }

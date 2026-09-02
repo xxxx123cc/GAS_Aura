@@ -21,6 +21,9 @@ AAuraCharacter::AAuraCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 400.f, 0.f);
 	GetCharacterMovement()->bConstrainToPlane = true;
+	GetCharacterMovement()->bUseRVOAvoidance = true;
+	GetCharacterMovement()->AvoidanceConsiderationRadius = 120.f;
+	GetCharacterMovement()->RVOAvoidanceWeight = 0.5f;
 	
 
 	
