@@ -38,6 +38,12 @@ int32 AAuraCharacterBase::GetLevel()
 	return ICombatInterface::GetLevel();
 }
 
+FVector AAuraCharacterBase::GetWeaponSocket()
+{
+	return Weapon->GetSocketLocation(WeaponTipSocket);
+	
+}
+
 // Called when the game starts or when spawned
 void AAuraCharacterBase::BeginPlay()
 {

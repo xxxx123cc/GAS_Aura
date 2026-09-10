@@ -64,6 +64,9 @@ void AAuraPlayerController::SetupInputComponent()
    
 	AuraEnhancedInputComponent->BindAbilityActions(InputConfig,this,&ThisClass::AbilityInputActionPressed,&ThisClass::AbilityInputActionOnCompleted,&ThisClass::AbilityInputActionOnTrigger);
 	
+	AuraEnhancedInputComponent->BindAction(ShiftAction,ETriggerEvent::Started,this,&AAuraPlayerController::ShiftPressed);
+	
+	AuraEnhancedInputComponent->BindAction(ShiftAction,ETriggerEvent::Completed,this,&AAuraPlayerController::ShiftReleased);
 	
 	FInputModeGameAndUI InputMode;
 	InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
@@ -136,12 +139,14 @@ void AAuraPlayerController::AutoRunning()
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult HitResult;
+	
 	GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult);
 	//上一个物体
 	LastActor = HitActor;
 	//当前物体
-	HitActor = HitResult.GetActor() ? Cast<IEnemyInterface>(HitResult.GetActor()) : nullptr;
+	AActor* Actor = HitResult.GetActor();
+	IEnemyInterface* Enemy = Cast<IEnemyInterface>(Actor);
+	HitActor = Enemy?Actor:nullptr ;
 	//上个和这个相同则不做处理
 	if (HitActor == LastActor)
 	return;
@@ -196,22 +201,13 @@ void AAuraPlayerController::AbilityInputActionPressed(FGameplayTag GameplayTag)
 void AAuraPlayerController::AbilityInputActionOnCompleted( FGameplayTag GameplayTag) 
 {
 	UAuraAbilitySystemComponent* AuraASC = GetAuraAbilitySystemComponent();
-	if (!GameplayTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	
+	if (AuraASC)
 	{
-		if (AuraASC)
-		{
-			AuraASC->OnReleased(GameplayTag);
-		}
-		return;
+		AuraASC->OnReleased(GameplayTag);
 	}
-	if( HitActor )
-	{
-		if (AuraASC)
-		{
-			AuraASC->OnReleased(GameplayTag);
-		}
-	}
-	else  if (FollowingTime<ShortPressedTime)
+	
+	if( !HitActor&&!bShiftPressed )
 	{
 		if (APawn* ControllerPawn = GetPawn())
 		{
@@ -244,15 +240,41 @@ void AAuraPlayerController::AbilityInputActionOnTrigger(FGameplayTag GameplayTag
 		return;
 	}
 		
-	if( HitActor )
+	if( HitActor||bShiftPressed )
 	{
 		if (AuraASC)
 		{
+			AActor* HitActorPtr = HitResult.GetActor();
+			AActor* OwnerActor = GetPawn();
+
+			if (!HitActorPtr)
+			{
+				AuraASC->OnTrigger(GameplayTag);
+				return;
+			}
+			
+			
+			if (!IsValid(HitActorPtr))
+			{
+				UE_LOG(LogTemp, Error, TEXT("HitActorPtr is invalid"));
+				return;
+			}
+
+			if (!IsValid(OwnerActor))
+			{
+				UE_LOG(LogTemp, Error, TEXT("OwnerActor is invalid, self=%s"),
+					*GetNameSafe(this));
+				return;
+			}
+
+			
 			AuraASC->OnTrigger(GameplayTag);
 		}
 	}
 	else if (!HitActor)
 	{
+		
+		
 		FollowingTime+=GetWorld()->GetDeltaSeconds();
 		FHitResult Result;
 		if (GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, true, Result))
@@ -269,3 +291,5 @@ void AAuraPlayerController::AbilityInputActionOnTrigger(FGameplayTag GameplayTag
 	}
 	
 }
+
+

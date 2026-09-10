@@ -27,6 +27,7 @@ public:
 	
 	AAuraPlayerController();
 	
+	FHitResult HitResult;
 protected:
 	virtual void BeginPlay() override;
 	
@@ -39,6 +40,7 @@ protected:
 	
 	void CursorTrace();
 	UAuraAbilitySystemComponent* GetAuraAbilitySystemComponent();
+	
 	
 	
 private:
@@ -61,12 +63,15 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UAuraInputConfig> InputConfig;
 	
+	UPROPERTY(EditAnywhere, Category = "Input")
+	UInputAction* ShiftAction;
 	
 	
-	TObjectPtr<IEnemyInterface>LastActor = nullptr;
+	
+	TScriptInterface<IEnemyInterface>LastActor = nullptr;
 	
 	
-	TObjectPtr<IEnemyInterface>HitActor = nullptr;
+	TScriptInterface<IEnemyInterface>HitActor = nullptr;
 	
 	void MoveInputAction(const FInputActionValue& Value) ;
 	
@@ -75,6 +80,12 @@ private:
 	void AbilityInputActionOnCompleted(FGameplayTag GameplayTag) ;
 	
 	void AbilityInputActionOnTrigger(FGameplayTag GameplayTag) ;
+	
+	void ShiftPressed(){bShiftPressed=true;};
+	
+	void ShiftReleased(){bShiftPressed =false;};
+	
+	bool bShiftPressed=false;
 	
 	float FollowingTime = 0.f;
 	

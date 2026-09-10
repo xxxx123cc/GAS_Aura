@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ClaudeCodeTabState">
+    <option name="tabSessions">
+      <map>
+        <entry key="0">
+          <value>
+            <TabSessionState>
+              <option name="provider" value="codex" />
+              <option name="sessionId" value="01a08651-2b2a-7381-8d5f-67fe89d3f9cd" />
+              <option name="cwd" value="D:\AuraGas\Aura" />
+              <option name="model" value="gpt-5.6-sol" />
+              <option name="permissionMode" value="default" />
+            </TabSessionState>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

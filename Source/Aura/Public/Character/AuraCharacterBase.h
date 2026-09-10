@@ -36,6 +36,7 @@ public:
 	virtual int32  GetLevel() override;
 protected:
 	
+	virtual FVector GetWeaponSocket() override;
 	
 	virtual void InitAbilityInfo();
 	
@@ -65,9 +66,11 @@ protected:
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> EffectClass, float Level = 1.f) const;
 	
 	void InitializeDefaultAttributes()const;
-	
-protected:
 
+	UPROPERTY(EditDefaultsOnly,Category="Character|Abilities")
+	FName WeaponTipSocket;
+
+	
 	UFUNCTION()
 	void AddGameplayAbility() ;
 	
@@ -75,6 +78,7 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly, Category = "Character|Abilities")
 	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
+	
 	
 	
 	

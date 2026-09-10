@@ -23,7 +23,7 @@ AAuraCharacter::AAuraCharacter()
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bUseRVOAvoidance = true;
 	GetCharacterMovement()->AvoidanceConsiderationRadius = 120.f;
-	GetCharacterMovement()->RVOAvoidanceWeight = 0.5f;
+	
 	
 
 	
@@ -33,6 +33,17 @@ void AAuraCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	
+}
+
+FVector AAuraCharacter::GetTargetLocation()
+{
+		
+	if (AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		return AuraPlayerController->HitResult.ImpactPoint;
+	}
+	return FVector::ZeroVector;
 	
 }
 
