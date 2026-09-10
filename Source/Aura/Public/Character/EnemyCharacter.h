@@ -7,6 +7,8 @@
 #include "Interaction/EnemyInterface.h"
 #include "EnemyCharacter.generated.h"
 
+class UWidgetComponent;
+
 /**
  * 
  */
@@ -35,11 +37,16 @@ class AURA_API AEnemyCharacter : public AAuraCharacterBase, public IEnemyInterfa
 	virtual int32 GetLevel() override;
 	//Combat Interface
 	
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Enemy|UI")
+	TObjectPtr<UWidgetComponent> HealthBar;
 	
 	UPROPERTY(BlueprintReadOnly,VisibleAnywhere,Category = "Enemy")
 	bool bHighlighted = false;
 	
 private:
+	void BindHealthBarCallbacks();
+	void UpdateHealthBar();
+
 	UPROPERTY(VisibleAnywhere,Category = "Enemy")
 	int32 EnemyLevel = 1;
 };

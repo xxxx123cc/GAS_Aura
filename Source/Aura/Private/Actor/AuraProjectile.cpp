@@ -3,9 +3,15 @@
 
 #include "Actor/AuraProjectile.h"
 
+#include "AbilitySystemBlueprintLibrary.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraFunctionLibrary.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Character/EnemyCharacter.h"
+#include "Components/AudioComponent.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
 #include "Particles/ParticleSystemComponent.h"
 
@@ -18,10 +24,13 @@ AAuraProjectile::AAuraProjectile()
 	bReplicates = true;
 	SetReplicateMovement(true);
 	ProjectileMovementComponent=CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
-	ParticleSystemComponent=CreateDefaultSubobject<UParticleSystemComponent>("ParticleSystemComponent");
+	
 	SphereComponent=CreateDefaultSubobject<USphereComponent>("SphereComponent");
+	
+	
 	SetRootComponent(SphereComponent);
-	ParticleSystemComponent->SetupAttachment(SphereComponent);
+
+	
 	ProjectileMovementComponent->UpdatedComponent = SphereComponent;
 	ProjectileMovementComponent->InitialSpeed=550.f;
 	ProjectileMovementComponent->MaxSpeed=550.f;
@@ -39,28 +48,48 @@ AAuraProjectile::AAuraProjectile()
 void AAuraProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	SetLifeSpan(LifeSpan);
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(this,&ThisClass::OnSphereOverlap);
+	AudioComponent =UGameplayStatics::SpawnSoundAttached(LoopingSound,GetRootComponent());
+	
 }
 
 void AAuraProjectile::OnSphereOverlap(UPrimitiveComponent* OverlappedComp, AActor* Other,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (!Other || Other == GetOwner())
-	{
-		return;
-	}
+	
+	
+		AudioComponent->Stop();
+		UGameplayStatics::PlaySoundAtLocation(this,Sound,GetActorLocation(),FRotator::ZeroRotator);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactEffect,GetActorLocation(),FRotator::ZeroRotator);
+		if (HasAuthority())
+		{
+			if (UAbilitySystemComponent* ASC =UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Other))
+				ASC->ApplyGameplayEffectSpecToSelf(*EffectSpecHandle.Data);
+			
+			Destroy();
+		}
+		else
+		{
+			bHit=true;
+		}
+		
+	
+	
+}
 
-	if (AEnemyCharacter* Enemy= Cast<AEnemyCharacter>(Other))
-	{
-		
-		
-	}
-	else
-	{
-		Destroy();
-	}
+void AAuraProjectile::Destroyed()
+{
 	
 	
+	if (!bHit&&!HasAuthority())
+	{
+		UGameplayStatics::PlaySoundAtLocation(this,Sound,GetActorLocation(),FRotator::ZeroRotator);
+		UNiagaraFunctionLibrary::SpawnSystemAtLocation(this,ImpactEffect,GetActorLocation(),FRotator::ZeroRotator);
+		
+	}
+	
+	Super::Destroyed();
 }
 
 void AAuraProjectile::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

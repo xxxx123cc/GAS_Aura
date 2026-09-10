@@ -3,6 +3,7 @@
 
 #include "AbilitySystem/Abilities/AuraProjectileSpell.h"
 
+#include "AbilitySystemComponent.h"
 #include "Actor/AuraProjectile.h"
 #include "Character/AuraCharacter.h"
 #include "GameFramework/PlayerState.h"
@@ -42,7 +43,9 @@ void UAuraProjectileSpell::SpawnFireBolt(const FVector& TargetLocation)
 			APawn*Instigator=   Cast<APawn>(AvatarActor) ;
 			AAuraProjectile*Projectile= GetWorld()->SpawnActorDeferred<AAuraProjectile>(ProjectileClass,Transforms,TargetActor,Instigator,
 				ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
-		 	
+			
+			UAbilitySystemComponent*ASC=GetAbilitySystemComponentFromActorInfo();
+		 	Projectile->EffectSpecHandle=ASC->MakeOutgoingSpec(DamageClass,GetAbilityLevel(),ASC->MakeEffectContext());
 			Projectile->FinishSpawning(Transforms);
 		 	
 			
